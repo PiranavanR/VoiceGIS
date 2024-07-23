@@ -90,5 +90,5 @@ def recognize():
         except Exception as e:
             (f"An error ocuured: {e}")
 
-#recognize()
+
 
