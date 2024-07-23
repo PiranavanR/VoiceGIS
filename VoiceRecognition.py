@@ -12,10 +12,10 @@ satellite_view = ["satellite", "celestial", "aerial"]
 traffic_view = ["traffic"]
 hide = ["hide"]
 remove_marker = ["remove marker on", "remove marker at", "remove mark on", "remove mark at", "remove marker", "remove mark", "delete mark", "delete marker", "remove markers", "remove all marks", "remove all markers", "remove all mark"]
-add_marker = ["add marks to", "add marks on", "add marks", "add marker to", "add mark to", "add march to", "add marker on", "add mark on", "add marker", "mark", "add mark", "marker",  "march", "ad marker to", "ad mark to", "ad march to", "ad marker on", "ad mark on", "ad marker", "ad mark", "admark to", "admark on", "admark"]
+add_marker = ["add marks to", "add marks on", "add marks", "add marker to", "add mark to", "add march to", "add marker on", "add mark on", "add marker", "mark", "add mark", "marker",  "march", "ad marker to", "ad mark to", "ad march to", "ad marker on", "ad mark on", "ad marker", "ad mark", "admark to", "admark on", "admark","mark"]
 
 def classify_query(q):
-    print("Classifying Query...")
+    ("Classifying Query...")
     if any(zi in q for zi in zoomin):
         pattern = "|".join(map(re.escape, zoomin))
         place = re.sub(pattern, "", q)
@@ -58,37 +58,37 @@ def classify_query(q):
         return "No Output", None
 
 def get_coordinates(q):
-    print("Getting Coordinates...")
+    ("Getting Coordinates...")
     geolocator = Nominatim(user_agent="VoiceGIS")
     location = geolocator.geocode(q)
-    print(location)
-    #print(location.address)
+    (location)
+    (location.address)
     return [location.latitude, location.longitude]
 
 def recognize():
     r = sr.Recognizer()
     with sr.Microphone(1) as source:
         r.adjust_for_ambient_noise(source, 1)
-        print("Say something!")
+        ("Say something!")
         winsound.Beep(500,250)
         try:
             audio = r.listen(source, phrase_time_limit=5)
-            print("Processing...")
+            ("Processing...")
             query = r.recognize_google(audio, language='en-IN').lower()
-            print("Processsed audio!")
-            print("Query: " + query)
-            print("Output Generated!")
+            ("Processsed audio!")
+            ("Query: " + query)
+            ("Output Generated!")
             classified_query, coordinates = classify_query(query)
-            print("Classified Query: " + classified_query)
-            print(f"Coordinates : {coordinates}")
+            ("Classified Query: " + classified_query)
+            (f"Coordinates : {coordinates}")
             if coordinates:
                 formatted_command = f"{classified_query}:{coordinates[0]},{coordinates[1]}"
             else:
                 formatted_command = f"{classified_query}:"
-            print(formatted_command)
+            (formatted_command)
             return formatted_command
         except Exception as e:
-            print(f"An error ocuured: {e}")
+            (f"An error ocuured: {e}")
 
 #recognize()
 
