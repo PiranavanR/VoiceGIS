@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voice-Activated GIS</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel= "stylesheet" type= "text/css" href= "static\style.css">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map"></div>
+  <button onclick="getVoiceCommand()">Tap to Speak</button>
+
+  <script>
+    var map = L.map('map').setView([51.505, -0.09], 13); // Default view
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    });
+
+    var satelliteLayer = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles © Esri'
+    });
+
+    var terrainLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    });
+
+    var trafficLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors, © CartoDB'
+    });
+
+    // Add the default layer
+    streetLayer.addTo(map);
+
+    var markersGroup = L.layerGroup();
+    map.addLayer(markersGroup);
+
+    function handleCommand(command) {
+      const [action, coordinates] = command.split(":");
+      if (action == "Zoom In") {
+        if (coordinates.length > 0){
+          const [latitude, longitude] = coordinates.split(",");
+          map.setView([parseFloat(latitude), parseFloat(longitude)], 13);
+        }
+        map.zoomIn();
+      } else if (action == "Zoom Out") {
+        map.zoomOut();
+      } else if (action == "Street View") {
+        map.eachLayer(function (layer) {
+          map.removeLayer(layer);
+        });
+        streetLayer.addTo(map);
+      } else if (action == "Satellite View") {
+        map.eachLayer(function (layer) {
+          map.removeLayer(layer);
+        });
+        satelliteLayer.addTo(map);
+      } else if (action == "Terrain View") {
+        map.eachLayer(function (layer) {
+          map.removeLayer(layer);
+        });
+        terrainLayer.addTo(map);
+      } else if (action == "Traffic View") {
+        map.eachLayer(function (layer) {
+          map.removeLayer(layer);
+        });
+        trafficLayer.addTo(map);
+      } else if (action == "Hide Layers") {
+        map.eachLayer(function (layer) {
+          map.removeLayer(layer);
+        });
+      } else if (action == "Remove Markers"){
+        if (coordinates.length > 0 && markersGroup.getLayers().length > 0) {
+          const [latitude, longitude] = coordinates.split(",");
+          markersGroup.eachLayer(function(marker){
+            if (marker.getLatLng().lat == parseFloat(latitude) && marker.getLatLng().lng == parseFloat(longitude)){
+              marker.remove();
+          }
+        });
+        }
+        else{
+          markersGroup.clearLayers();
+        }
+      } else if (coordinates.length > 0 && action == "Navigate") {
+        const [latitude, longitude] = coordinates.split(",");
+        map.setView([parseFloat(latitude), parseFloat(longitude)], 13);
+      } else if (coordinates.length > 0 && action == "Mark") {
+        const [latitude, longitude] = coordinates.split(",");
+        const marker = L.marker([parseFloat(latitude), parseFloat(longitude)]).addTo(markersGroup);
+        map.setView([parseFloat(latitude), parseFloat(longitude)], 13);
+      }
+    }
+
+    function getVoiceCommand() {
+      fetch('/voice-command', {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then(data => {
+        handleCommand(data.command);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  </script>
+</body>
+</html>

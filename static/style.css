@@ -1,0 +1,27 @@
+html, body {
+    height: 100%; /* Make sure html and body take up full viewport height */
+    margin: 0;
+    padding: 0;
+}
+body {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+}
+#map {
+    width: 100%; /* Full width */
+    height: 95vh; /* 80% of the viewport height */
+}
+button{
+    height: 5vh;
+    border : 1px solid #00eeff;
+    background-color: #080808;
+    color: #fff;
+    border-radius: 5px;
+    font-size: medium;
+    transition: 0.5s;
+}
+button:hover{
+    background-color: #00eeff;
+}
+
