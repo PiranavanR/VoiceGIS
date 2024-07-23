@@ -5,3 +5,4 @@ requests==2.26.0
 PyAudio==0.2.14
 setuptools
 Werkzeug==2.2.2
+Gunicorn
