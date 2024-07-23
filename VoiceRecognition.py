@@ -12,7 +12,7 @@ satellite_view = ["satellite", "celestial", "aerial"]
 traffic_view = ["traffic"]
 hide = ["hide"]
 remove_marker = ["remove marker on", "remove marker at", "remove mark on", "remove mark at", "remove marker", "remove mark", "delete mark", "delete marker", "remove markers", "remove all marks", "remove all markers", "remove all mark"]
-add_marker = ["add marks to", "add marks on", "add marks", "add marker to", "add mark to", "add march to", "add marker on", "add mark on", "add marker", "mark", "add mark", "marker",  "march", "ad marker to", "ad mark to", "ad march to", "ad marker on", "ad mark on", "ad marker", "ad mark", "admark to", "admark on", "admark","mark"]
+add_marker = ["add marks to", "add marks on", "add marks", "add marker to", "add mark to", "add march to", "add marker on", "add mark on", "add marker", "mark", "add mark", "marker",  "march", "ad marker to", "ad mark to", "ad march to", "ad marker on", "ad mark on", "ad marker", "ad mark", "admark to", "admark on", "admark"]
 
 def classify_query(q):
     ("Classifying Query...")
